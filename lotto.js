@@ -18,8 +18,9 @@ async function fetchData() {
     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
     "x-requested-with": "XMLHttpRequest"
   };
-
-  const bodyContent = "gameName=LOTTO&offset=0&limit=10&isAjax=true&isAjax=true";
+  
+  const gameName = process.argv[2] || 'LOTTO';
+  const bodyContent = `gameName=${gameName}&offset=0&limit=10&isAjax=true`;
 
   try {
     // Fetch the data from the API
