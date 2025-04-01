@@ -6,14 +6,32 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+    inputs:
+      action:
+      description: "Select the action to perform"
+      required: true
+      default: "generate"
+      type: choice
+      options:
+        - generate
+        - results
+      game:
+      description: "Select the game type"
+      required: true
+      default: "lotto"
+      type: choice
+      options:
+        - lotto
+        - powerball
+        - lottoplus
 
-jobs:
-  build:
+  jobs:
+    build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [22.x]
+      node-version: [22.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -21,24 +39,10 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+      node-version: ${{ matrix.node-version }}
 
-    - name: Run Generate Lotto
-      run: |
-        npm install
-        node lotto
-    
-    - name: Run Genrate Powerball
-      run: |
-        npm install
-        node lotto pwerball
+    - name: Install Dependencies
+      run: npm install
 
-    - name: Run Get LottoResults
-      run: |
-        npm install
-        node lotto lotto results 
-
-    - name: Run Get Powerball Results
-      run: |
-        npm install
-        node lotto pwerball results
+    - name: Run Lotto Script with Options
+      run: node lotto ${{ github.event.inputs.game }} ${{ github.event.inputs.action }}
