@@ -24,25 +24,29 @@ on:
           - lotto
           - powerball
           - lottoplus
-
-  jobs:
+jobs:
     build:
-    runs-on: ubuntu-latest
+      runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-      node-version: [22.x]
+      strategy:
+        matrix:
+          node-version: [22.x]
 
-    steps:
-    - uses: actions/checkout@v4
+      steps:
+        - uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-      node-version: ${{ matrix.node-version }}
+        - name: Use Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v4
+          with:
+           node-version: ${{ matrix.node-version }}
 
-    - name: Install Dependencies
-      run: npm install
+        - name: Install Dependencies
+          run: npm install
+          
+        - name: Run Lotto Script (Default)
+          if: ${{ github.event_name == 'push' }}
+          run: node lotto
 
-    - name: Run Lotto Script with Options
-      run: node lotto ${{ github.event.inputs.game }} ${{ github.event.inputs.action }}
+        - name: Run Lotto Script with Options
+          if: ${{ github.event_name == 'workflow_dispatch' }}
+          run: node lotto ${{ github.event.inputs.game }} ${{ github.event.inputs.action }}
