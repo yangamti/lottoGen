@@ -8,22 +8,22 @@ on:
   workflow_dispatch:
     inputs:
       action:
-      description: "Select the action to perform"
-      required: true
-      default: "generate"
-      type: choice
-      options:
-        - generate
-        - results
+        description: "Select the action to perform"
+        required: true
+        default: "generate"
+        type: choice
+        options:
+          - generate
+          - results
       game:
-      description: "Select the game type"
-      required: true
-      default: "lotto"
-      type: choice
-      options:
-        - lotto
-        - powerball
-        - lottoplus
+        description: "Select the game type"
+        required: true
+        default: "lotto"
+        type: choice
+        options:
+          - lotto
+          - powerball
+          - lottoplus
 
   jobs:
     build:
