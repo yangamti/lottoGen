@@ -19,7 +19,12 @@ async function fetchData() {
     "x-requested-with": "XMLHttpRequest"
   };
   
+  //Check if gameName is passed as a command line argument: lotto, powerball, lottoplus
+  // If not, default to 'LOTTO'
   const gameName = process.argv[2] || 'LOTTO';
+  
+  // pass actions as command line arguments: generate,results
+  const action = process.argv[3] || 'genrate';
   const bodyContent = `gameName=${gameName}&offset=0&limit=10&isAjax=true`;
 
   try {
@@ -32,14 +37,23 @@ async function fetchData() {
     
     // Convert the response to text
     const responseText = await response.text();
-    
+
+    //console.log("Api Response:", responseText);
+
     // Parse the response as JSON
     const data = JSON.parse(responseText);
     
     // Call the function to generate random numbers based on this data
     const randomNumbers = generateWeightedRandomNumbers(data);
     
-    console.log("Generated Random Numbers:", randomNumbers);
+    if (action === 'results') {
+      console.log(gameName + " Results:", data.data);
+    } else if (action === 'generate') {
+      console.log("Generated " + gameName + " Numbers:", randomNumbers);
+    } else {
+      // Default action is generate
+      console.log("Generated " + gameName + " Numbers:", randomNumbers);
+    }
 
   } catch (error) {
     console.error("Error fetching data:", error);
